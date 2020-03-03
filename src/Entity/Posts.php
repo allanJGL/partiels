@@ -45,6 +45,23 @@ class Posts
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $documentName;
+
+    public function getDocumentName()
+    {
+        return $this->documentName;
+    }
+
+    public function setDocumentName($documentName)
+    {
+        $this->documentName = $documentName;
+
+        return $this;
+    }
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();

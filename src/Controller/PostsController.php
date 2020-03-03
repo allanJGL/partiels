@@ -6,6 +6,7 @@ use App\Entity\Posts;
 use App\Entity\User;
 use App\Form\PostsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,6 +26,25 @@ class PostsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $document = $form->get('document')->getData();
+
+            if ($document) {
+                $originalFilename = pathinfo($document->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$document->guessExtension();
+
+                try {
+                    $document->move(
+                        $this->getParameter('documents_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+
+                }
+
+                $post->setDocumentName($newFilename);
+            }
             $entityManager->persist($post);
             $entityManager->flush();
 

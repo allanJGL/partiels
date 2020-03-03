@@ -7,8 +7,10 @@ use App\Entity\User;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class PostsType extends AbstractType
 {
@@ -18,6 +20,21 @@ class PostsType extends AbstractType
         $builder
             ->add('title')
             ->add('content', CKEditorType::class)
+            ->add('document', FileType::class, [
+                'label' => 'Document (PDF file)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    ])
+                ],
+            ])
         ;
     }
 
@@ -27,4 +44,5 @@ class PostsType extends AbstractType
             'data_class' => Posts::class,
         ]);
     }
+
 }

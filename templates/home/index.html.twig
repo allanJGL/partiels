@@ -18,18 +18,20 @@
     </style>
 
     <div class="example-wrapper">
-        <h1>Hello {{ app.user.email }}!</h1>
-        <h2>Roles:
-            {% for role in app.user.roles %}
-                {{ role }}
-            {% endfor %}
-        </h2>
-
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <h1>Hello {{ app.user.email }}!</h1>
+            <h2>Roles:
+                {% for role in app.user.roles %}
+                    {{ role }}
+                {% endfor %}
+            </h2>
+        {% endif %}
         <hr>
 
         {% for row in posts %}
             <h3>{{ row.title }}</h3>
             {{ row.content|raw }}
+            Doc: <a href="{{ asset('uploads/documents/' ~ row.documentName) }}" target=_blank>{{ row.documentName }}</a>
             <p>by: {{ row.user.email }}</p>
         {% endfor %}
 
