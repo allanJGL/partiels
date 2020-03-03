@@ -26,6 +26,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/logout ">logout</a>
                 </li>
+            {% endif %}
+            {# TODO: hierarchy #}
+            {% if is_granted('ROLE_USER') %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Review</a>
+                    </li>
+                    {% if is_granted('ROLE_COM') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Review</a>
+                        </li>
+                        {% if is_granted('ROLE_REVIEW') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Review</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
