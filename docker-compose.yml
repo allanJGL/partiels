@@ -6,7 +6,7 @@ services:
         command: --default-authentication-plugin=mysql_native_password
         restart: always
         environment:
-            - MYSQL_DATABASE=db_symfony
+            - MYSQL_DATABASE=partiels
             - MYSQL_USER=user
             - MYSQL_PASSWORD=pass
             - MYSQL_RANDOM_ROOT_PASSWORD=yes
